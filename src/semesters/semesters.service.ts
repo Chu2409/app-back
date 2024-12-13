@@ -14,7 +14,25 @@ export class SemestersService {
   }
 
   async findAll() {
-    return await this.prisma.semester.findMany()
+    return await this.prisma.semester.findMany({
+      include: {
+        subjects: {
+          include: {
+            enrollments: {
+              include: {
+                student: true,
+              },
+            },
+            assignments: {
+              include: {
+                submissions: true,
+              },
+            },
+            schedules: true,
+          },
+        },
+      },
+    })
   }
 
   async findOne(id: string) {

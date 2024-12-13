@@ -30,6 +30,11 @@ export class UsersController {
     return await this.userService.findOne(id)
   }
 
+  @Get('email/:email')
+  async findOneByEmail(@Param('email') email: string) {
+    return await this.userService.findOneByEmail(email)
+  }
+
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return await this.userService.update(id, updateUserDto)

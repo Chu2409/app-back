@@ -14,7 +14,17 @@ export class AssignmentsService {
   }
 
   async findAll() {
-    return this.prisma.assignment.findMany()
+    return this.prisma.assignment.findMany({
+      include: {
+        submissions: {
+          include: {
+            student: true,
+          },
+        },
+        subject: true,
+        resources: true,
+      },
+    })
   }
 
   async findOne(id: string) {
