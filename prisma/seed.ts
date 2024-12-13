@@ -19,13 +19,6 @@ async function main() {
     },
   })
 
-  const user3 = await prisma.user.create({
-    data: {
-      email: 'test@gmail.com',
-      password: '123123123',
-    },
-  })
-
   // Create Semesters
   const semester1 = await prisma.semester.create({
     data: {

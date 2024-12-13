@@ -8,39 +8,36 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  enrollments Enrollment[]
+  id          String                 @id @default(uuid())
+  email       String                 @unique
+  password    String
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
   submissions AssignmentSubmission[]
+  enrollments Enrollment[]
 }
 
 model Semester {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  subjects Subject[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  subjects  Subject[]
 }
 
 model Subject {
-  id        String   @id @default(uuid())
-  name      String
-  professor String
-  credits   Int
-  status    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  semester    Semester     @relation(fields: [semesterId], references: [id])
+  id          String       @id @default(uuid())
+  name        String
+  professor   String
+  credits     Int
+  status      String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   semesterId  String
-  schedules   Schedule[]
   assignments Assignment[]
   enrollments Enrollment[]
+  schedules   Schedule[]
+  semester    Semester     @relation(fields: [semesterId], references: [id])
 }
 
 model Schedule {
@@ -49,9 +46,8 @@ model Schedule {
   time      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  subject   Subject @relation(fields: [subjectId], references: [id])
   subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
 }
 
 model Enrollment {
@@ -60,54 +56,50 @@ model Enrollment {
   isActive   Boolean  @default(true)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  student   User    @relation(fields: [studentId], references: [id])
-  studentId String
-  subject   Subject @relation(fields: [subjectId], references: [id])
-  subjectId String
+  studentId  String
+  subjectId  String
+  student    User     @relation(fields: [studentId], references: [id])
+  subject    Subject  @relation(fields: [subjectId], references: [id])
 }
 
 model Assignment {
-  id          String   @id @default(uuid())
+  id          String                 @id @default(uuid())
   title       String
   description String
   dueDate     DateTime
   status      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  subject     Subject                @relation(fields: [subjectId], references: [id])
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
   subjectId   String
-  resources   Resource[]
+  subject     Subject                @relation(fields: [subjectId], references: [id])
   submissions AssignmentSubmission[]
+  resources   Resource[]
 }
 
 model AssignmentSubmission {
-  id          String    @id @default(uuid())
-  isSubmitted Boolean   @default(false)
-  submittedAt DateTime?
-  grade       Float?
-  feedback    String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  student      User       @relation(fields: [studentId], references: [id])
+  id           String     @id @default(uuid())
+  isSubmitted  Boolean    @default(false)
+  submittedAt  DateTime?
+  grade        Float?
+  feedback     String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   studentId    String
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
   assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  student      User       @relation(fields: [studentId], references: [id])
   resources    Resource[]
 }
 
 model Resource {
-  id        String   @id @default(uuid())
-  name      String
-  type      String
-  url       String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  assignment   Assignment?           @relation(fields: [assignmentId], references: [id])
+  id           String                @id @default(uuid())
+  name         String
+  type         String
+  url          String
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
   assignmentId String?
-  submission   AssignmentSubmission? @relation(fields: [submissionId], references: [id])
   submissionId String?
+  assignment   Assignment?           @relation(fields: [assignmentId], references: [id])
+  submission   AssignmentSubmission? @relation(fields: [submissionId], references: [id])
 }
